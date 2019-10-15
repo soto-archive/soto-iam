@@ -1,16 +1,16 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 
 import PackageDescription
 
 let package = Package(
-  name: "SwiftAWSIam",
+  name: "IAM",
   products: [
-      .library(name: "SwiftAWSIam", targets: ["SwiftAWSIam"]),
+      .library(name: "IAM", targets: ["IAM"]),
   ],
   dependencies: [
-      .package(url: "https://github.com/noppoMan/aws-sdk-swift-core.git", .upToNextMajor(from: "1.0.0"))
+      .package(url: "https://github.com/swift-aws/aws-sdk-swift-core.git", .upToNextMinor(from: "3.4.0"))
   ],
   targets: [
-      .target(name: "SwiftAWSIam", dependencies: ["AWSSDKSwiftCore"]),
+      .target(name: "IAM", dependencies: ["AWSSDKSwiftCore"]),
   ]
 )
