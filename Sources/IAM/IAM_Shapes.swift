@@ -4,6 +4,173 @@ import Foundation
 import AWSSDKSwiftCore
 
 extension IAM {
+    //MARK: Enums
+
+    public enum ContextKeyTypeEnum: String, CustomStringConvertible, Codable {
+        case string = "string"
+        case stringlist = "stringList"
+        case numeric = "numeric"
+        case numericlist = "numericList"
+        case boolean = "boolean"
+        case booleanlist = "booleanList"
+        case ip = "ip"
+        case iplist = "ipList"
+        case binary = "binary"
+        case binarylist = "binaryList"
+        case date = "date"
+        case datelist = "dateList"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum DeletionTaskStatusType: String, CustomStringConvertible, Codable {
+        case succeeded = "SUCCEEDED"
+        case inProgress = "IN_PROGRESS"
+        case failed = "FAILED"
+        case notStarted = "NOT_STARTED"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum EntityType: String, CustomStringConvertible, Codable {
+        case user = "User"
+        case role = "Role"
+        case group = "Group"
+        case localmanagedpolicy = "LocalManagedPolicy"
+        case awsmanagedpolicy = "AWSManagedPolicy"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum PermissionsBoundaryAttachmentType: String, CustomStringConvertible, Codable {
+        case permissionsboundarypolicy = "PermissionsBoundaryPolicy"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum PolicyEvaluationDecisionType: String, CustomStringConvertible, Codable {
+        case allowed = "allowed"
+        case explicitdeny = "explicitDeny"
+        case implicitdeny = "implicitDeny"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum PolicySourceType: String, CustomStringConvertible, Codable {
+        case user = "user"
+        case group = "group"
+        case role = "role"
+        case awsManaged = "aws-managed"
+        case userManaged = "user-managed"
+        case resource = "resource"
+        case none = "none"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum PolicyUsageType: String, CustomStringConvertible, Codable {
+        case permissionspolicy = "PermissionsPolicy"
+        case permissionsboundary = "PermissionsBoundary"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum ReportFormatType: String, CustomStringConvertible, Codable {
+        case textCsv = "text/csv"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum ReportStateType: String, CustomStringConvertible, Codable {
+        case started = "STARTED"
+        case inprogress = "INPROGRESS"
+        case complete = "COMPLETE"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum AssignmentStatusType: String, CustomStringConvertible, Codable {
+        case assigned = "Assigned"
+        case unassigned = "Unassigned"
+        case any = "Any"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum EncodingType: String, CustomStringConvertible, Codable {
+        case ssh = "SSH"
+        case pem = "PEM"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum GlobalEndpointTokenVersion: String, CustomStringConvertible, Codable {
+        case v1token = "v1Token"
+        case v2token = "v2Token"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum JobStatusType: String, CustomStringConvertible, Codable {
+        case inProgress = "IN_PROGRESS"
+        case completed = "COMPLETED"
+        case failed = "FAILED"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum PolicyOwnerEntityType: String, CustomStringConvertible, Codable {
+        case user = "USER"
+        case role = "ROLE"
+        case group = "GROUP"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum PolicyScopeType: String, CustomStringConvertible, Codable {
+        case all = "All"
+        case aws = "AWS"
+        case local = "Local"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum PolicyType: String, CustomStringConvertible, Codable {
+        case inline = "INLINE"
+        case managed = "MANAGED"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum SortKeyType: String, CustomStringConvertible, Codable {
+        case serviceNamespaceAscending = "SERVICE_NAMESPACE_ASCENDING"
+        case serviceNamespaceDescending = "SERVICE_NAMESPACE_DESCENDING"
+        case lastAuthenticatedTimeAscending = "LAST_AUTHENTICATED_TIME_ASCENDING"
+        case lastAuthenticatedTimeDescending = "LAST_AUTHENTICATED_TIME_DESCENDING"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum StatusType: String, CustomStringConvertible, Codable {
+        case active = "Active"
+        case inactive = "Inactive"
+        public var description: String { return self.rawValue }
+    }
+
+    public enum SummaryKeyType: String, CustomStringConvertible, Codable {
+        case users = "Users"
+        case usersquota = "UsersQuota"
+        case groups = "Groups"
+        case groupsquota = "GroupsQuota"
+        case servercertificates = "ServerCertificates"
+        case servercertificatesquota = "ServerCertificatesQuota"
+        case userpolicysizequota = "UserPolicySizeQuota"
+        case grouppolicysizequota = "GroupPolicySizeQuota"
+        case groupsperuserquota = "GroupsPerUserQuota"
+        case signingcertificatesperuserquota = "SigningCertificatesPerUserQuota"
+        case accesskeysperuserquota = "AccessKeysPerUserQuota"
+        case mfadevices = "MFADevices"
+        case mfadevicesinuse = "MFADevicesInUse"
+        case accountmfaenabled = "AccountMFAEnabled"
+        case accountaccesskeyspresent = "AccountAccessKeysPresent"
+        case accountsigningcertificatespresent = "AccountSigningCertificatesPresent"
+        case attachedpoliciespergroupquota = "AttachedPoliciesPerGroupQuota"
+        case attachedpoliciesperrolequota = "AttachedPoliciesPerRoleQuota"
+        case attachedpoliciesperuserquota = "AttachedPoliciesPerUserQuota"
+        case policies = "Policies"
+        case policiesquota = "PoliciesQuota"
+        case policysizequota = "PolicySizeQuota"
+        case policyversionsinuse = "PolicyVersionsInUse"
+        case policyversionsinusequota = "PolicyVersionsInUseQuota"
+        case versionsperpolicyquota = "VersionsPerPolicyQuota"
+        case globalendpointtokenversion = "GlobalEndpointTokenVersion"
+        public var description: String { return self.rawValue }
+    }
+
+    //MARK: Shapes
 
     public struct AccessDetail: AWSShape {
         public static var _members: [AWSShapeMember] = [
@@ -428,22 +595,6 @@ extension IAM {
             case contextKeyType = "ContextKeyType"
             case contextKeyValues = "ContextKeyValues"
         }
-    }
-
-    public enum ContextKeyTypeEnum: String, CustomStringConvertible, Codable {
-        case string = "string"
-        case stringlist = "stringList"
-        case numeric = "numeric"
-        case numericlist = "numericList"
-        case boolean = "boolean"
-        case booleanlist = "booleanList"
-        case ip = "ip"
-        case iplist = "ipList"
-        case binary = "binary"
-        case binarylist = "binaryList"
-        case date = "date"
-        case datelist = "dateList"
-        public var description: String { return self.rawValue }
     }
 
     public struct CreateAccessKeyRequest: AWSShape {
@@ -1807,14 +1958,6 @@ extension IAM {
         }
     }
 
-    public enum DeletionTaskStatusType: String, CustomStringConvertible, Codable {
-        case succeeded = "SUCCEEDED"
-        case inProgress = "IN_PROGRESS"
-        case failed = "FAILED"
-        case notStarted = "NOT_STARTED"
-        public var description: String { return self.rawValue }
-    }
-
     public struct DetachGroupPolicyRequest: AWSShape {
         public static var _members: [AWSShapeMember] = [
             AWSShapeMember(label: "GroupName", required: true, type: .string), 
@@ -1988,7 +2131,7 @@ extension IAM {
         public let id: String
         /// The name of the entity (user or role).
         public let name: String
-        /// The path to the entity (user or role). For more information about paths, see IAM Identifiers in the Using IAM guide. 
+        /// The path to the entity (user or role). For more information about paths, see IAM Identifiers in the IAM User Guide. 
         public let path: String?
         /// The type of entity (user or role).
         public let `type`: PolicyOwnerEntityType
@@ -2008,15 +2151,6 @@ extension IAM {
             case path = "Path"
             case `type` = "Type"
         }
-    }
-
-    public enum EntityType: String, CustomStringConvertible, Codable {
-        case user = "User"
-        case role = "Role"
-        case group = "Group"
-        case localmanagedpolicy = "LocalManagedPolicy"
-        case awsmanagedpolicy = "AWSManagedPolicy"
-        public var description: String { return self.rawValue }
     }
 
     public struct ErrorDetails: AWSShape {
@@ -2050,6 +2184,7 @@ extension IAM {
             AWSShapeMember(label: "MatchedStatements", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "MissingContextValues", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "OrganizationsDecisionDetail", required: false, type: .structure), 
+            AWSShapeMember(label: "PermissionsBoundaryDecisionDetail", required: false, type: .structure), 
             AWSShapeMember(label: "ResourceSpecificResults", required: false, type: .list, encoding: .list(member:"member"))
         ]
 
@@ -2057,7 +2192,7 @@ extension IAM {
         public let evalActionName: String
         /// The result of the simulation.
         public let evalDecision: PolicyEvaluationDecisionType
-        /// Additional details about the results of the evaluation decision. When there are both IAM policies and resource policies, this parameter explains how each set of policies contributes to the final evaluation decision. When simulating cross-account access to a resource, both the resource-based policy and the caller's IAM policy must grant access. See How IAM Roles Differ from Resource-based Policies 
+        /// Additional details about the results of the cross-account evaluation decision. This parameter is populated for only cross-account simulations. It contains a brief summary of how each policy type contributes to the final evaluation decision. If the simulation evaluates policies within the same account and includes a resource ARN, then the parameter is present but the response is empty. If the simulation evaluates policies within the same account and specifies all resources (*), then the parameter is not returned. When you make a cross-account request, AWS evaluates the request in the trusting account and the trusted account. The request is allowed only if both evaluations return true. For more information about how policies are evaluated, see Evaluating Policies Within a Single Account. If an AWS Organizations SCP included in the evaluation denies access, the simulation ends. In this case, policy evaluation does not proceed any further and this parameter is not returned.
         public let evalDecisionDetails: [String: PolicyEvaluationDecisionType]?
         /// The ARN of the resource that the indicated API operation was tested on.
         public let evalResourceName: String?
@@ -2067,10 +2202,12 @@ extension IAM {
         public let missingContextValues: [String]?
         /// A structure that details how Organizations and its service control policies affect the results of the simulation. Only applies if the simulated user's account is part of an organization.
         public let organizationsDecisionDetail: OrganizationsDecisionDetail?
+        /// Contains information about the effect that a permissions boundary has on a policy simulation when the boundary is applied to an IAM entity.
+        public let permissionsBoundaryDecisionDetail: PermissionsBoundaryDecisionDetail?
         /// The individual results of the simulation of the API operation specified in EvalActionName on each resource.
         public let resourceSpecificResults: [ResourceSpecificResult]?
 
-        public init(evalActionName: String, evalDecision: PolicyEvaluationDecisionType, evalDecisionDetails: [String: PolicyEvaluationDecisionType]? = nil, evalResourceName: String? = nil, matchedStatements: [Statement]? = nil, missingContextValues: [String]? = nil, organizationsDecisionDetail: OrganizationsDecisionDetail? = nil, resourceSpecificResults: [ResourceSpecificResult]? = nil) {
+        public init(evalActionName: String, evalDecision: PolicyEvaluationDecisionType, evalDecisionDetails: [String: PolicyEvaluationDecisionType]? = nil, evalResourceName: String? = nil, matchedStatements: [Statement]? = nil, missingContextValues: [String]? = nil, organizationsDecisionDetail: OrganizationsDecisionDetail? = nil, permissionsBoundaryDecisionDetail: PermissionsBoundaryDecisionDetail? = nil, resourceSpecificResults: [ResourceSpecificResult]? = nil) {
             self.evalActionName = evalActionName
             self.evalDecision = evalDecision
             self.evalDecisionDetails = evalDecisionDetails
@@ -2078,6 +2215,7 @@ extension IAM {
             self.matchedStatements = matchedStatements
             self.missingContextValues = missingContextValues
             self.organizationsDecisionDetail = organizationsDecisionDetail
+            self.permissionsBoundaryDecisionDetail = permissionsBoundaryDecisionDetail
             self.resourceSpecificResults = resourceSpecificResults
         }
 
@@ -2089,6 +2227,7 @@ extension IAM {
             case matchedStatements = "MatchedStatements"
             case missingContextValues = "MissingContextValues"
             case organizationsDecisionDetail = "OrganizationsDecisionDetail"
+            case permissionsBoundaryDecisionDetail = "PermissionsBoundaryDecisionDetail"
             case resourceSpecificResults = "ResourceSpecificResults"
         }
     }
@@ -3468,15 +3607,15 @@ extension IAM {
             AWSShapeMember(label: "Path", required: true, type: .string)
         ]
 
-        ///  The Amazon Resource Name (ARN) specifying the group. For more information about ARNs and how to use them in policies, see IAM Identifiers in the Using IAM guide. 
+        ///  The Amazon Resource Name (ARN) specifying the group. For more information about ARNs and how to use them in policies, see IAM Identifiers in the IAM User Guide. 
         public let arn: String
         /// The date and time, in ISO 8601 date-time format, when the group was created.
         public let createDate: TimeStamp
-        ///  The stable and unique string identifying the group. For more information about IDs, see IAM Identifiers in the Using IAM guide. 
+        ///  The stable and unique string identifying the group. For more information about IDs, see IAM Identifiers in the IAM User Guide. 
         public let groupId: String
         /// The friendly name that identifies the group.
         public let groupName: String
-        /// The path to the group. For more information about paths, see IAM Identifiers in the Using IAM guide. 
+        /// The path to the group. For more information about paths, see IAM Identifiers in the IAM User Guide. 
         public let path: String
 
         public init(arn: String, createDate: TimeStamp, groupId: String, groupName: String, path: String) {
@@ -3512,13 +3651,13 @@ extension IAM {
         public let attachedManagedPolicies: [AttachedPolicy]?
         /// The date and time, in ISO 8601 date-time format, when the group was created.
         public let createDate: TimeStamp?
-        /// The stable and unique string identifying the group. For more information about IDs, see IAM Identifiers in the Using IAM guide.
+        /// The stable and unique string identifying the group. For more information about IDs, see IAM Identifiers in the IAM User Guide.
         public let groupId: String?
         /// The friendly name that identifies the group.
         public let groupName: String?
         /// A list of the inline policies embedded in the group.
         public let groupPolicyList: [PolicyDetail]?
-        /// The path to the group. For more information about paths, see IAM Identifiers in the Using IAM guide.
+        /// The path to the group. For more information about paths, see IAM Identifiers in the IAM User Guide.
         public let path: String?
 
         public init(arn: String? = nil, attachedManagedPolicies: [AttachedPolicy]? = nil, createDate: TimeStamp? = nil, groupId: String? = nil, groupName: String? = nil, groupPolicyList: [PolicyDetail]? = nil, path: String? = nil) {
@@ -3552,15 +3691,15 @@ extension IAM {
             AWSShapeMember(label: "Roles", required: true, type: .list, encoding: .list(member:"member"))
         ]
 
-        ///  The Amazon Resource Name (ARN) specifying the instance profile. For more information about ARNs and how to use them in policies, see IAM Identifiers in the Using IAM guide. 
+        ///  The Amazon Resource Name (ARN) specifying the instance profile. For more information about ARNs and how to use them in policies, see IAM Identifiers in the IAM User Guide. 
         public let arn: String
         /// The date when the instance profile was created.
         public let createDate: TimeStamp
-        ///  The stable and unique string identifying the instance profile. For more information about IDs, see IAM Identifiers in the Using IAM guide. 
+        ///  The stable and unique string identifying the instance profile. For more information about IDs, see IAM Identifiers in the IAM User Guide. 
         public let instanceProfileId: String
         /// The name identifying the instance profile.
         public let instanceProfileName: String
-        ///  The path to the instance profile. For more information about paths, see IAM Identifiers in the Using IAM guide. 
+        ///  The path to the instance profile. For more information about paths, see IAM Identifiers in the IAM User Guide. 
         public let path: String
         /// The role associated with the instance profile.
         public let roles: [Role]
@@ -5459,17 +5598,17 @@ extension IAM {
         public let attachmentCount: Int?
         /// The date and time, in ISO 8601 date-time format, when the policy was created.
         public let createDate: TimeStamp?
-        /// The identifier for the version of the policy that is set as the default (operative) version. For more information about policy versions, see Versioning for Managed Policies in the Using IAM guide. 
+        /// The identifier for the version of the policy that is set as the default (operative) version. For more information about policy versions, see Versioning for Managed Policies in the IAM User Guide. 
         public let defaultVersionId: String?
         /// A friendly description of the policy.
         public let description: String?
         /// Specifies whether the policy can be attached to an IAM user, group, or role.
         public let isAttachable: Bool?
-        /// The path to the policy. For more information about paths, see IAM Identifiers in the Using IAM guide.
+        /// The path to the policy. For more information about paths, see IAM Identifiers in the IAM User Guide.
         public let path: String?
         /// The number of entities (users and roles) for which the policy is used as the permissions boundary.  For more information about permissions boundaries, see Permissions Boundaries for IAM Identities  in the IAM User Guide.
         public let permissionsBoundaryUsageCount: Int?
-        /// The stable and unique string identifying the policy. For more information about IDs, see IAM Identifiers in the Using IAM guide.
+        /// The stable and unique string identifying the policy. For more information about IDs, see IAM Identifiers in the IAM User Guide.
         public let policyId: String?
         /// The friendly name (not ARN) identifying the policy.
         public let policyName: String?
@@ -5604,9 +5743,21 @@ extension IAM {
         }
     }
 
-    public enum PermissionsBoundaryAttachmentType: String, CustomStringConvertible, Codable {
-        case permissionsboundarypolicy = "PermissionsBoundaryPolicy"
-        public var description: String { return self.rawValue }
+    public struct PermissionsBoundaryDecisionDetail: AWSShape {
+        public static var _members: [AWSShapeMember] = [
+            AWSShapeMember(label: "AllowedByPermissionsBoundary", required: false, type: .boolean)
+        ]
+
+        /// Specifies whether an action is allowed by a permissions boundary that is applied to an IAM entity (user or role). A value of true means that the permissions boundary does not deny the action. This means that the policy includes an Allow statement that matches the request. In this case, if an identity-based policy also allows the action, the request is allowed. A value of false means that either the requested action is not allowed (implicitly denied) or that the action is explicitly denied by the permissions boundary. In both of these cases, the action is not allowed, regardless of the identity-based policy.
+        public let allowedByPermissionsBoundary: Bool?
+
+        public init(allowedByPermissionsBoundary: Bool? = nil) {
+            self.allowedByPermissionsBoundary = allowedByPermissionsBoundary
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case allowedByPermissionsBoundary = "AllowedByPermissionsBoundary"
+        }
     }
 
     public struct Policy: AWSShape {
@@ -5635,11 +5786,11 @@ extension IAM {
         public let description: String?
         /// Specifies whether the policy can be attached to an IAM user, group, or role.
         public let isAttachable: Bool?
-        /// The path to the policy. For more information about paths, see IAM Identifiers in the Using IAM guide.
+        /// The path to the policy. For more information about paths, see IAM Identifiers in the IAM User Guide.
         public let path: String?
         /// The number of entities (users and roles) for which the policy is used to set the permissions boundary.  For more information about permissions boundaries, see Permissions Boundaries for IAM Identities  in the IAM User Guide.
         public let permissionsBoundaryUsageCount: Int?
-        /// The stable and unique string identifying the policy. For more information about IDs, see IAM Identifiers in the Using IAM guide.
+        /// The stable and unique string identifying the policy. For more information about IDs, see IAM Identifiers in the IAM User Guide.
         public let policyId: String?
         /// The friendly name (not ARN) identifying the policy.
         public let policyName: String?
@@ -5695,13 +5846,6 @@ extension IAM {
             case policyDocument = "PolicyDocument"
             case policyName = "PolicyName"
         }
-    }
-
-    public enum PolicyEvaluationDecisionType: String, CustomStringConvertible, Codable {
-        case allowed = "allowed"
-        case explicitdeny = "explicitDeny"
-        case implicitdeny = "implicitDeny"
-        public var description: String { return self.rawValue }
     }
 
     public struct PolicyGrantingServiceAccess: AWSShape {
@@ -5782,23 +5926,6 @@ extension IAM {
             case roleId = "RoleId"
             case roleName = "RoleName"
         }
-    }
-
-    public enum PolicySourceType: String, CustomStringConvertible, Codable {
-        case user = "user"
-        case group = "group"
-        case role = "role"
-        case awsManaged = "aws-managed"
-        case userManaged = "user-managed"
-        case resource = "resource"
-        case none = "none"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum PolicyUsageType: String, CustomStringConvertible, Codable {
-        case permissionspolicy = "PermissionsPolicy"
-        case permissionsboundary = "PermissionsBoundary"
-        public var description: String { return self.rawValue }
     }
 
     public struct PolicyUser: AWSShape {
@@ -6145,18 +6272,6 @@ extension IAM {
         }
     }
 
-    public enum ReportFormatType: String, CustomStringConvertible, Codable {
-        case textCsv = "text/csv"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum ReportStateType: String, CustomStringConvertible, Codable {
-        case started = "STARTED"
-        case inprogress = "INPROGRESS"
-        case complete = "COMPLETE"
-        public var description: String { return self.rawValue }
-    }
-
     public struct ResetServiceSpecificCredentialRequest: AWSShape {
         public static var _members: [AWSShapeMember] = [
             AWSShapeMember(label: "ServiceSpecificCredentialId", required: true, type: .string), 
@@ -6211,10 +6326,11 @@ extension IAM {
             AWSShapeMember(label: "EvalResourceDecision", required: true, type: .enum), 
             AWSShapeMember(label: "EvalResourceName", required: true, type: .string), 
             AWSShapeMember(label: "MatchedStatements", required: false, type: .list, encoding: .list(member:"member")), 
-            AWSShapeMember(label: "MissingContextValues", required: false, type: .list, encoding: .list(member:"member"))
+            AWSShapeMember(label: "MissingContextValues", required: false, type: .list, encoding: .list(member:"member")), 
+            AWSShapeMember(label: "PermissionsBoundaryDecisionDetail", required: false, type: .structure)
         ]
 
-        /// Additional details about the results of the evaluation decision. When there are both IAM policies and resource policies, this parameter explains how each set of policies contributes to the final evaluation decision. When simulating cross-account access to a resource, both the resource-based policy and the caller's IAM policy must grant access.
+        /// Additional details about the results of the evaluation decision on a single resource. This parameter is returned only for cross-account simulations. This parameter explains how each policy type contributes to the resource-specific evaluation decision.
         public let evalDecisionDetails: [String: PolicyEvaluationDecisionType]?
         /// The result of the simulation of the simulated API operation on the resource specified in EvalResourceName.
         public let evalResourceDecision: PolicyEvaluationDecisionType
@@ -6224,13 +6340,16 @@ extension IAM {
         public let matchedStatements: [Statement]?
         /// A list of context keys that are required by the included input policies but that were not provided by one of the input parameters. This list is used when a list of ARNs is included in the ResourceArns parameter instead of "*". If you do not specify individual resources, by setting ResourceArns to "*" or by not including the ResourceArns parameter, then any missing context values are instead included under the EvaluationResults section. To discover the context keys used by a set of policies, you can call GetContextKeysForCustomPolicy or GetContextKeysForPrincipalPolicy.
         public let missingContextValues: [String]?
+        /// Contains information about the effect that a permissions boundary has on a policy simulation when that boundary is applied to an IAM entity.
+        public let permissionsBoundaryDecisionDetail: PermissionsBoundaryDecisionDetail?
 
-        public init(evalDecisionDetails: [String: PolicyEvaluationDecisionType]? = nil, evalResourceDecision: PolicyEvaluationDecisionType, evalResourceName: String, matchedStatements: [Statement]? = nil, missingContextValues: [String]? = nil) {
+        public init(evalDecisionDetails: [String: PolicyEvaluationDecisionType]? = nil, evalResourceDecision: PolicyEvaluationDecisionType, evalResourceName: String, matchedStatements: [Statement]? = nil, missingContextValues: [String]? = nil, permissionsBoundaryDecisionDetail: PermissionsBoundaryDecisionDetail? = nil) {
             self.evalDecisionDetails = evalDecisionDetails
             self.evalResourceDecision = evalResourceDecision
             self.evalResourceName = evalResourceName
             self.matchedStatements = matchedStatements
             self.missingContextValues = missingContextValues
+            self.permissionsBoundaryDecisionDetail = permissionsBoundaryDecisionDetail
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -6239,6 +6358,7 @@ extension IAM {
             case evalResourceName = "EvalResourceName"
             case matchedStatements = "MatchedStatements"
             case missingContextValues = "MissingContextValues"
+            case permissionsBoundaryDecisionDetail = "PermissionsBoundaryDecisionDetail"
         }
     }
 
@@ -6299,6 +6419,7 @@ extension IAM {
             AWSShapeMember(label: "Path", required: true, type: .string), 
             AWSShapeMember(label: "PermissionsBoundary", required: false, type: .structure), 
             AWSShapeMember(label: "RoleId", required: true, type: .string), 
+            AWSShapeMember(label: "RoleLastUsed", required: false, type: .structure), 
             AWSShapeMember(label: "RoleName", required: true, type: .string), 
             AWSShapeMember(label: "Tags", required: false, type: .list, encoding: .list(member:"member"))
         ]
@@ -6313,18 +6434,20 @@ extension IAM {
         public let description: String?
         /// The maximum session duration (in seconds) for the specified role. Anyone who uses the AWS CLI, or API to assume the role can specify the duration using the optional DurationSeconds API parameter or duration-seconds CLI parameter.
         public let maxSessionDuration: Int?
-        ///  The path to the role. For more information about paths, see IAM Identifiers in the Using IAM guide. 
+        ///  The path to the role. For more information about paths, see IAM Identifiers in the IAM User Guide. 
         public let path: String
         /// The ARN of the policy used to set the permissions boundary for the role. For more information about permissions boundaries, see Permissions Boundaries for IAM Identities  in the IAM User Guide.
         public let permissionsBoundary: AttachedPermissionsBoundary?
-        ///  The stable and unique string identifying the role. For more information about IDs, see IAM Identifiers in the Using IAM guide. 
+        ///  The stable and unique string identifying the role. For more information about IDs, see IAM Identifiers in the IAM User Guide. 
         public let roleId: String
+        /// Contains information about the last time that an IAM role was used. This includes the date and time and the Region in which the role was last used. Activity is only reported for the trailing 400 days. This period can be shorter if your Region began supporting these features within the last year. The role might have been used more than 400 days ago. For more information, see Regions Where Data Is Tracked in the IAM User Guide.
+        public let roleLastUsed: RoleLastUsed?
         /// The friendly name that identifies the role.
         public let roleName: String
         /// A list of tags that are attached to the specified role. For more information about tagging, see Tagging IAM Identities in the IAM User Guide.
         public let tags: [Tag]?
 
-        public init(arn: String, assumeRolePolicyDocument: String? = nil, createDate: TimeStamp, description: String? = nil, maxSessionDuration: Int? = nil, path: String, permissionsBoundary: AttachedPermissionsBoundary? = nil, roleId: String, roleName: String, tags: [Tag]? = nil) {
+        public init(arn: String, assumeRolePolicyDocument: String? = nil, createDate: TimeStamp, description: String? = nil, maxSessionDuration: Int? = nil, path: String, permissionsBoundary: AttachedPermissionsBoundary? = nil, roleId: String, roleLastUsed: RoleLastUsed? = nil, roleName: String, tags: [Tag]? = nil) {
             self.arn = arn
             self.assumeRolePolicyDocument = assumeRolePolicyDocument
             self.createDate = createDate
@@ -6333,6 +6456,7 @@ extension IAM {
             self.path = path
             self.permissionsBoundary = permissionsBoundary
             self.roleId = roleId
+            self.roleLastUsed = roleLastUsed
             self.roleName = roleName
             self.tags = tags
         }
@@ -6346,6 +6470,7 @@ extension IAM {
             case path = "Path"
             case permissionsBoundary = "PermissionsBoundary"
             case roleId = "RoleId"
+            case roleLastUsed = "RoleLastUsed"
             case roleName = "RoleName"
             case tags = "Tags"
         }
@@ -6361,6 +6486,7 @@ extension IAM {
             AWSShapeMember(label: "Path", required: false, type: .string), 
             AWSShapeMember(label: "PermissionsBoundary", required: false, type: .structure), 
             AWSShapeMember(label: "RoleId", required: false, type: .string), 
+            AWSShapeMember(label: "RoleLastUsed", required: false, type: .structure), 
             AWSShapeMember(label: "RoleName", required: false, type: .string), 
             AWSShapeMember(label: "RolePolicyList", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "Tags", required: false, type: .list, encoding: .list(member:"member"))
@@ -6375,12 +6501,14 @@ extension IAM {
         public let createDate: TimeStamp?
         /// A list of instance profiles that contain this role.
         public let instanceProfileList: [InstanceProfile]?
-        /// The path to the role. For more information about paths, see IAM Identifiers in the Using IAM guide.
+        /// The path to the role. For more information about paths, see IAM Identifiers in the IAM User Guide.
         public let path: String?
         /// The ARN of the policy used to set the permissions boundary for the role. For more information about permissions boundaries, see Permissions Boundaries for IAM Identities  in the IAM User Guide.
         public let permissionsBoundary: AttachedPermissionsBoundary?
-        /// The stable and unique string identifying the role. For more information about IDs, see IAM Identifiers in the Using IAM guide.
+        /// The stable and unique string identifying the role. For more information about IDs, see IAM Identifiers in the IAM User Guide.
         public let roleId: String?
+        /// Contains information about the last time that an IAM role was used. This includes the date and time and the Region in which the role was last used. Activity is only reported for the trailing 400 days. This period can be shorter if your Region began supporting these features within the last year. The role might have been used more than 400 days ago. For more information, see Regions Where Data Is Tracked in the IAM User Guide.
+        public let roleLastUsed: RoleLastUsed?
         /// The friendly name that identifies the role.
         public let roleName: String?
         /// A list of inline policies embedded in the role. These policies are the role's access (permissions) policies.
@@ -6388,7 +6516,7 @@ extension IAM {
         /// A list of tags that are attached to the specified role. For more information about tagging, see Tagging IAM Identities in the IAM User Guide.
         public let tags: [Tag]?
 
-        public init(arn: String? = nil, assumeRolePolicyDocument: String? = nil, attachedManagedPolicies: [AttachedPolicy]? = nil, createDate: TimeStamp? = nil, instanceProfileList: [InstanceProfile]? = nil, path: String? = nil, permissionsBoundary: AttachedPermissionsBoundary? = nil, roleId: String? = nil, roleName: String? = nil, rolePolicyList: [PolicyDetail]? = nil, tags: [Tag]? = nil) {
+        public init(arn: String? = nil, assumeRolePolicyDocument: String? = nil, attachedManagedPolicies: [AttachedPolicy]? = nil, createDate: TimeStamp? = nil, instanceProfileList: [InstanceProfile]? = nil, path: String? = nil, permissionsBoundary: AttachedPermissionsBoundary? = nil, roleId: String? = nil, roleLastUsed: RoleLastUsed? = nil, roleName: String? = nil, rolePolicyList: [PolicyDetail]? = nil, tags: [Tag]? = nil) {
             self.arn = arn
             self.assumeRolePolicyDocument = assumeRolePolicyDocument
             self.attachedManagedPolicies = attachedManagedPolicies
@@ -6397,6 +6525,7 @@ extension IAM {
             self.path = path
             self.permissionsBoundary = permissionsBoundary
             self.roleId = roleId
+            self.roleLastUsed = roleLastUsed
             self.roleName = roleName
             self.rolePolicyList = rolePolicyList
             self.tags = tags
@@ -6411,9 +6540,32 @@ extension IAM {
             case path = "Path"
             case permissionsBoundary = "PermissionsBoundary"
             case roleId = "RoleId"
+            case roleLastUsed = "RoleLastUsed"
             case roleName = "RoleName"
             case rolePolicyList = "RolePolicyList"
             case tags = "Tags"
+        }
+    }
+
+    public struct RoleLastUsed: AWSShape {
+        public static var _members: [AWSShapeMember] = [
+            AWSShapeMember(label: "LastUsedDate", required: false, type: .timestamp), 
+            AWSShapeMember(label: "Region", required: false, type: .string)
+        ]
+
+        /// The date and time, in ISO 8601 date-time format that the role was last used. This field is null if the role has not been used within the IAM tracking period. For more information about the tracking period, see Regions Where Data Is Tracked in the IAM User Guide. 
+        public let lastUsedDate: TimeStamp?
+        /// The name of the AWS Region in which the role was last used.
+        public let region: String?
+
+        public init(lastUsedDate: TimeStamp? = nil, region: String? = nil) {
+            self.lastUsedDate = lastUsedDate
+            self.region = region
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case lastUsedDate = "LastUsedDate"
+            case region = "Region"
         }
     }
 
@@ -6577,13 +6729,13 @@ extension IAM {
             AWSShapeMember(label: "UploadDate", required: false, type: .timestamp)
         ]
 
-        ///  The Amazon Resource Name (ARN) specifying the server certificate. For more information about ARNs and how to use them in policies, see IAM Identifiers in the Using IAM guide. 
+        ///  The Amazon Resource Name (ARN) specifying the server certificate. For more information about ARNs and how to use them in policies, see IAM Identifiers in the IAM User Guide. 
         public let arn: String
         /// The date on which the certificate is set to expire.
         public let expiration: TimeStamp?
-        ///  The path to the server certificate. For more information about paths, see IAM Identifiers in the Using IAM guide. 
+        ///  The path to the server certificate. For more information about paths, see IAM Identifiers in the IAM User Guide. 
         public let path: String
-        ///  The stable and unique string identifying the server certificate. For more information about IDs, see IAM Identifiers in the Using IAM guide. 
+        ///  The stable and unique string identifying the server certificate. For more information about IDs, see IAM Identifiers in the IAM User Guide. 
         public let serverCertificateId: String
         /// The name that identifies the server certificate.
         public let serverCertificateName: String
@@ -6824,6 +6976,7 @@ extension IAM {
             AWSShapeMember(label: "ContextEntries", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "Marker", required: false, type: .string), 
             AWSShapeMember(label: "MaxItems", required: false, type: .integer), 
+            AWSShapeMember(label: "PermissionsBoundaryPolicyInputList", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "PolicyInputList", required: true, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "ResourceArns", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "ResourceHandlingOption", required: false, type: .string), 
@@ -6841,6 +6994,8 @@ extension IAM {
         public let marker: String?
         /// Use this only when paginating results to indicate the maximum number of items you want in the response. If additional items exist beyond the maximum you specify, the IsTruncated response element is true. If you do not include this parameter, the number of items defaults to 100. Note that IAM might return fewer results, even when there are more results available. In that case, the IsTruncated response element returns true, and Marker contains a value to include in the subsequent call that tells the service where to continue from.
         public let maxItems: Int?
+        /// The IAM permissions boundary policy to simulate. The permissions boundary sets the maximum permissions that an IAM entity can have. You can input only one permissions boundary when you pass a policy to this operation. For more information about permissions boundaries, see Permissions Boundaries for IAM Entities in the IAM User Guide. The policy input is specified as a string that contains the complete, valid JSON text of a permissions boundary policy. The regex pattern used to validate this parameter is a string of characters consisting of the following:   Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range   The printable characters in the Basic Latin and Latin-1 Supplement character set (through \u00FF)   The special characters tab (\u0009), line feed (\u000A), and carriage return (\u000D)  
+        public let permissionsBoundaryPolicyInputList: [String]?
         /// A list of policy documents to include in the simulation. Each document is specified as a string containing the complete, valid JSON text of an IAM policy. Do not include any resource-based policies in this parameter. Any resource-based policy must be submitted with the ResourcePolicy parameter. The policies cannot be "scope-down" policies, such as you could include in a call to GetFederationToken or one of the AssumeRole API operations. In other words, do not use policies designed to restrict what a user can do while using the temporary credentials. The regex pattern used to validate this parameter is a string of characters consisting of the following:   Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range   The printable characters in the Basic Latin and Latin-1 Supplement character set (through \u00FF)   The special characters tab (\u0009), line feed (\u000A), and carriage return (\u000D)  
         public let policyInputList: [String]
         /// A list of ARNs of AWS resources to include in the simulation. If this parameter is not provided, then the value defaults to * (all resources). Each API in the ActionNames parameter is evaluated for each resource in this list. The simulation determines the access result (allowed or denied) of each combination and reports it in the response. The simulation does not automatically retrieve policies for the specified resources. If you want to include a resource policy in the simulation, then you must include the policy as a string in the ResourcePolicy parameter. If you include a ResourcePolicy, then it must be applicable to all of the resources included in the simulation or you receive an invalid input error. For more information about ARNs, see Amazon Resource Names (ARNs) and AWS Service Namespaces in the AWS General Reference.
@@ -6852,12 +7007,13 @@ extension IAM {
         /// A resource-based policy to include in the simulation provided as a string. Each resource in the simulation is treated as if it had this policy attached. You can include only one resource-based policy in a simulation. The regex pattern used to validate this parameter is a string of characters consisting of the following:   Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range   The printable characters in the Basic Latin and Latin-1 Supplement character set (through \u00FF)   The special characters tab (\u0009), line feed (\u000A), and carriage return (\u000D)  
         public let resourcePolicy: String?
 
-        public init(actionNames: [String], callerArn: String? = nil, contextEntries: [ContextEntry]? = nil, marker: String? = nil, maxItems: Int? = nil, policyInputList: [String], resourceArns: [String]? = nil, resourceHandlingOption: String? = nil, resourceOwner: String? = nil, resourcePolicy: String? = nil) {
+        public init(actionNames: [String], callerArn: String? = nil, contextEntries: [ContextEntry]? = nil, marker: String? = nil, maxItems: Int? = nil, permissionsBoundaryPolicyInputList: [String]? = nil, policyInputList: [String], resourceArns: [String]? = nil, resourceHandlingOption: String? = nil, resourceOwner: String? = nil, resourcePolicy: String? = nil) {
             self.actionNames = actionNames
             self.callerArn = callerArn
             self.contextEntries = contextEntries
             self.marker = marker
             self.maxItems = maxItems
+            self.permissionsBoundaryPolicyInputList = permissionsBoundaryPolicyInputList
             self.policyInputList = policyInputList
             self.resourceArns = resourceArns
             self.resourceHandlingOption = resourceHandlingOption
@@ -6880,6 +7036,11 @@ extension IAM {
             try validate(self.marker, name:"marker", parent: name, pattern: "[\\u0020-\\u00FF]+")
             try validate(self.maxItems, name:"maxItems", parent: name, max: 1000)
             try validate(self.maxItems, name:"maxItems", parent: name, min: 1)
+            try self.permissionsBoundaryPolicyInputList?.forEach {
+                try validate($0, name: "permissionsBoundaryPolicyInputList[]", parent: name, max: 131072)
+                try validate($0, name: "permissionsBoundaryPolicyInputList[]", parent: name, min: 1)
+                try validate($0, name: "permissionsBoundaryPolicyInputList[]", parent: name, pattern: "[\\u0009\\u000A\\u000D\\u0020-\\u00FF]+")
+            }
             try self.policyInputList.forEach {
                 try validate($0, name: "policyInputList[]", parent: name, max: 131072)
                 try validate($0, name: "policyInputList[]", parent: name, min: 1)
@@ -6904,6 +7065,7 @@ extension IAM {
             case contextEntries = "ContextEntries"
             case marker = "Marker"
             case maxItems = "MaxItems"
+            case permissionsBoundaryPolicyInputList = "PermissionsBoundaryPolicyInputList"
             case policyInputList = "PolicyInputList"
             case resourceArns = "ResourceArns"
             case resourceHandlingOption = "ResourceHandlingOption"
@@ -6946,6 +7108,7 @@ extension IAM {
             AWSShapeMember(label: "ContextEntries", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "Marker", required: false, type: .string), 
             AWSShapeMember(label: "MaxItems", required: false, type: .integer), 
+            AWSShapeMember(label: "PermissionsBoundaryPolicyInputList", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "PolicyInputList", required: false, type: .list, encoding: .list(member:"member")), 
             AWSShapeMember(label: "PolicySourceArn", required: true, type: .string), 
             AWSShapeMember(label: "ResourceArns", required: false, type: .list, encoding: .list(member:"member")), 
@@ -6964,6 +7127,8 @@ extension IAM {
         public let marker: String?
         /// Use this only when paginating results to indicate the maximum number of items you want in the response. If additional items exist beyond the maximum you specify, the IsTruncated response element is true. If you do not include this parameter, the number of items defaults to 100. Note that IAM might return fewer results, even when there are more results available. In that case, the IsTruncated response element returns true, and Marker contains a value to include in the subsequent call that tells the service where to continue from.
         public let maxItems: Int?
+        /// The IAM permissions boundary policy to simulate. The permissions boundary sets the maximum permissions that the entity can have. You can input only one permissions boundary when you pass a policy to this operation. An IAM entity can only have one permissions boundary in effect at a time. For example, if a permissions boundary is attached to an entity and you pass in a different permissions boundary policy using this parameter, then the new permission boundary policy is used for the simulation. For more information about permissions boundaries, see Permissions Boundaries for IAM Entities in the IAM User Guide. The policy input is specified as a string containing the complete, valid JSON text of a permissions boundary policy. The regex pattern used to validate this parameter is a string of characters consisting of the following:   Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range   The printable characters in the Basic Latin and Latin-1 Supplement character set (through \u00FF)   The special characters tab (\u0009), line feed (\u000A), and carriage return (\u000D)  
+        public let permissionsBoundaryPolicyInputList: [String]?
         /// An optional list of additional policy documents to include in the simulation. Each document is specified as a string containing the complete, valid JSON text of an IAM policy. The regex pattern used to validate this parameter is a string of characters consisting of the following:   Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range   The printable characters in the Basic Latin and Latin-1 Supplement character set (through \u00FF)   The special characters tab (\u0009), line feed (\u000A), and carriage return (\u000D)  
         public let policyInputList: [String]?
         /// The Amazon Resource Name (ARN) of a user, group, or role whose policies you want to include in the simulation. If you specify a user, group, or role, the simulation includes all policies that are associated with that entity. If you specify a user, the simulation also includes all policies that are attached to any groups the user belongs to. For more information about ARNs, see Amazon Resource Names (ARNs) and AWS Service Namespaces in the AWS General Reference.
@@ -6977,12 +7142,13 @@ extension IAM {
         /// A resource-based policy to include in the simulation provided as a string. Each resource in the simulation is treated as if it had this policy attached. You can include only one resource-based policy in a simulation. The regex pattern used to validate this parameter is a string of characters consisting of the following:   Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range   The printable characters in the Basic Latin and Latin-1 Supplement character set (through \u00FF)   The special characters tab (\u0009), line feed (\u000A), and carriage return (\u000D)  
         public let resourcePolicy: String?
 
-        public init(actionNames: [String], callerArn: String? = nil, contextEntries: [ContextEntry]? = nil, marker: String? = nil, maxItems: Int? = nil, policyInputList: [String]? = nil, policySourceArn: String, resourceArns: [String]? = nil, resourceHandlingOption: String? = nil, resourceOwner: String? = nil, resourcePolicy: String? = nil) {
+        public init(actionNames: [String], callerArn: String? = nil, contextEntries: [ContextEntry]? = nil, marker: String? = nil, maxItems: Int? = nil, permissionsBoundaryPolicyInputList: [String]? = nil, policyInputList: [String]? = nil, policySourceArn: String, resourceArns: [String]? = nil, resourceHandlingOption: String? = nil, resourceOwner: String? = nil, resourcePolicy: String? = nil) {
             self.actionNames = actionNames
             self.callerArn = callerArn
             self.contextEntries = contextEntries
             self.marker = marker
             self.maxItems = maxItems
+            self.permissionsBoundaryPolicyInputList = permissionsBoundaryPolicyInputList
             self.policyInputList = policyInputList
             self.policySourceArn = policySourceArn
             self.resourceArns = resourceArns
@@ -7006,6 +7172,11 @@ extension IAM {
             try validate(self.marker, name:"marker", parent: name, pattern: "[\\u0020-\\u00FF]+")
             try validate(self.maxItems, name:"maxItems", parent: name, max: 1000)
             try validate(self.maxItems, name:"maxItems", parent: name, min: 1)
+            try self.permissionsBoundaryPolicyInputList?.forEach {
+                try validate($0, name: "permissionsBoundaryPolicyInputList[]", parent: name, max: 131072)
+                try validate($0, name: "permissionsBoundaryPolicyInputList[]", parent: name, min: 1)
+                try validate($0, name: "permissionsBoundaryPolicyInputList[]", parent: name, pattern: "[\\u0009\\u000A\\u000D\\u0020-\\u00FF]+")
+            }
             try self.policyInputList?.forEach {
                 try validate($0, name: "policyInputList[]", parent: name, max: 131072)
                 try validate($0, name: "policyInputList[]", parent: name, min: 1)
@@ -7032,6 +7203,7 @@ extension IAM {
             case contextEntries = "ContextEntries"
             case marker = "Marker"
             case maxItems = "MaxItems"
+            case permissionsBoundaryPolicyInputList = "PermissionsBoundaryPolicyInputList"
             case policyInputList = "PolicyInputList"
             case policySourceArn = "PolicySourceArn"
             case resourceArns = "ResourceArns"
@@ -7979,19 +8151,19 @@ extension IAM {
             AWSShapeMember(label: "UserName", required: true, type: .string)
         ]
 
-        /// The Amazon Resource Name (ARN) that identifies the user. For more information about ARNs and how to use ARNs in policies, see IAM Identifiers in the Using IAM guide. 
+        /// The Amazon Resource Name (ARN) that identifies the user. For more information about ARNs and how to use ARNs in policies, see IAM Identifiers in the IAM User Guide. 
         public let arn: String
         /// The date and time, in ISO 8601 date-time format, when the user was created.
         public let createDate: TimeStamp
-        /// The date and time, in ISO 8601 date-time format, when the user's password was last used to sign in to an AWS website. For a list of AWS websites that capture a user's last sign-in time, see the Credential Reports topic in the Using IAM guide. If a password is used more than once in a five-minute span, only the first use is returned in this field. If the field is null (no value), then it indicates that they never signed in with a password. This can be because:   The user never had a password.   A password exists but has not been used since IAM started tracking this information on October 20, 2014.   A null value does not mean that the user never had a password. Also, if the user does not currently have a password, but had one in the past, then this field contains the date and time the most recent password was used. This value is returned only in the GetUser and ListUsers operations. 
+        /// The date and time, in ISO 8601 date-time format, when the user's password was last used to sign in to an AWS website. For a list of AWS websites that capture a user's last sign-in time, see the Credential Reports topic in the IAM User Guide. If a password is used more than once in a five-minute span, only the first use is returned in this field. If the field is null (no value), then it indicates that they never signed in with a password. This can be because:   The user never had a password.   A password exists but has not been used since IAM started tracking this information on October 20, 2014.   A null value does not mean that the user never had a password. Also, if the user does not currently have a password but had one in the past, then this field contains the date and time the most recent password was used. This value is returned only in the GetUser and ListUsers operations. 
         public let passwordLastUsed: TimeStamp?
-        /// The path to the user. For more information about paths, see IAM Identifiers in the Using IAM guide.
+        /// The path to the user. For more information about paths, see IAM Identifiers in the IAM User Guide.
         public let path: String
         /// The ARN of the policy used to set the permissions boundary for the user. For more information about permissions boundaries, see Permissions Boundaries for IAM Identities  in the IAM User Guide.
         public let permissionsBoundary: AttachedPermissionsBoundary?
         /// A list of tags that are associated with the specified user. For more information about tagging, see Tagging IAM Identities in the IAM User Guide.
         public let tags: [Tag]?
-        /// The stable and unique string identifying the user. For more information about IDs, see IAM Identifiers in the Using IAM guide.
+        /// The stable and unique string identifying the user. For more information about IDs, see IAM Identifiers in the IAM User Guide.
         public let userId: String
         /// The friendly name identifying the user.
         public let userName: String
@@ -8040,13 +8212,13 @@ extension IAM {
         public let createDate: TimeStamp?
         /// A list of IAM groups that the user is in.
         public let groupList: [String]?
-        /// The path to the user. For more information about paths, see IAM Identifiers in the Using IAM guide.
+        /// The path to the user. For more information about paths, see IAM Identifiers in the IAM User Guide.
         public let path: String?
         /// The ARN of the policy used to set the permissions boundary for the user. For more information about permissions boundaries, see Permissions Boundaries for IAM Identities  in the IAM User Guide.
         public let permissionsBoundary: AttachedPermissionsBoundary?
         /// A list of tags that are associated with the specified user. For more information about tagging, see Tagging IAM Identities in the IAM User Guide.
         public let tags: [Tag]?
-        /// The stable and unique string identifying the user. For more information about IDs, see IAM Identifiers in the Using IAM guide.
+        /// The stable and unique string identifying the user. For more information about IDs, see IAM Identifiers in the IAM User Guide.
         public let userId: String?
         /// The friendly name identifying the user.
         public let userName: String?
@@ -8115,95 +8287,5 @@ extension IAM {
             case serialNumber = "SerialNumber"
             case user = "User"
         }
-    }
-
-    public enum AssignmentStatusType: String, CustomStringConvertible, Codable {
-        case assigned = "Assigned"
-        case unassigned = "Unassigned"
-        case any = "Any"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum EncodingType: String, CustomStringConvertible, Codable {
-        case ssh = "SSH"
-        case pem = "PEM"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum GlobalEndpointTokenVersion: String, CustomStringConvertible, Codable {
-        case v1token = "v1Token"
-        case v2token = "v2Token"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum JobStatusType: String, CustomStringConvertible, Codable {
-        case inProgress = "IN_PROGRESS"
-        case completed = "COMPLETED"
-        case failed = "FAILED"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum PolicyOwnerEntityType: String, CustomStringConvertible, Codable {
-        case user = "USER"
-        case role = "ROLE"
-        case group = "GROUP"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum PolicyScopeType: String, CustomStringConvertible, Codable {
-        case all = "All"
-        case aws = "AWS"
-        case local = "Local"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum PolicyType: String, CustomStringConvertible, Codable {
-        case inline = "INLINE"
-        case managed = "MANAGED"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum SortKeyType: String, CustomStringConvertible, Codable {
-        case serviceNamespaceAscending = "SERVICE_NAMESPACE_ASCENDING"
-        case serviceNamespaceDescending = "SERVICE_NAMESPACE_DESCENDING"
-        case lastAuthenticatedTimeAscending = "LAST_AUTHENTICATED_TIME_ASCENDING"
-        case lastAuthenticatedTimeDescending = "LAST_AUTHENTICATED_TIME_DESCENDING"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum StatusType: String, CustomStringConvertible, Codable {
-        case active = "Active"
-        case inactive = "Inactive"
-        public var description: String { return self.rawValue }
-    }
-
-    public enum SummaryKeyType: String, CustomStringConvertible, Codable {
-        case users = "Users"
-        case usersquota = "UsersQuota"
-        case groups = "Groups"
-        case groupsquota = "GroupsQuota"
-        case servercertificates = "ServerCertificates"
-        case servercertificatesquota = "ServerCertificatesQuota"
-        case userpolicysizequota = "UserPolicySizeQuota"
-        case grouppolicysizequota = "GroupPolicySizeQuota"
-        case groupsperuserquota = "GroupsPerUserQuota"
-        case signingcertificatesperuserquota = "SigningCertificatesPerUserQuota"
-        case accesskeysperuserquota = "AccessKeysPerUserQuota"
-        case mfadevices = "MFADevices"
-        case mfadevicesinuse = "MFADevicesInUse"
-        case accountmfaenabled = "AccountMFAEnabled"
-        case accountaccesskeyspresent = "AccountAccessKeysPresent"
-        case accountsigningcertificatespresent = "AccountSigningCertificatesPresent"
-        case attachedpoliciespergroupquota = "AttachedPoliciesPerGroupQuota"
-        case attachedpoliciesperrolequota = "AttachedPoliciesPerRoleQuota"
-        case attachedpoliciesperuserquota = "AttachedPoliciesPerUserQuota"
-        case policies = "Policies"
-        case policiesquota = "PoliciesQuota"
-        case policysizequota = "PolicySizeQuota"
-        case policyversionsinuse = "PolicyVersionsInUse"
-        case policyversionsinusequota = "PolicyVersionsInUseQuota"
-        case versionsperpolicyquota = "VersionsPerPolicyQuota"
-        case globalendpointtokenversion = "GlobalEndpointTokenVersion"
-        public var description: String { return self.rawValue }
     }
 }
